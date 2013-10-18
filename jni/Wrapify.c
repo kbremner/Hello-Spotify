@@ -7,6 +7,8 @@
 #include "headers/com_deftech_wrapify_Wrapify.h"
 #include "headers/callbacks.h"
 
+static pthread_t main_thread;
+static sp_session *session;
 static sp_session_callbacks callbacks = {
 	&logged_in,
 	&logged_out,
@@ -20,6 +22,15 @@ static sp_session_callbacks callbacks = {
 	NULL
 };
 
+static void *main_loop(){
+	int next_timeout = 0;
+	for(;;){
+		sp_session_process_events(session, &next_timeout);
+	}
+
+	return NULL;
+}
+
 JNIEXPORT jstring JNICALL Java_com_deftech_wrapify_Wrapify_getBuildID(JNIEnv *env, jobject jObject) {
 	__android_log_print(ANDROID_LOG_VERBOSE, "getBuildID", "returning build ID");
 	return (*env)->NewStringUTF(env, sp_build_id());
@@ -28,7 +39,7 @@ JNIEXPORT jstring JNICALL Java_com_deftech_wrapify_Wrapify_getBuildID(JNIEnv *en
 JNIEXPORT int JNICALL Java_com_deftech_wrapify_Wrapify_login(JNIEnv *env, jobject jObject, jstring username, jstring password, jstring cache_dir) {
 	sp_session_config config;
 	sp_error error;
-	sp_session *session;
+//	sp_session *session;
 
 	const char *cache = (*env)->GetStringUTFChars(env, cache_dir, NULL);
 	__android_log_print(ANDROID_LOG_VERBOSE, "Cache", "cache dir: %s", cache);
@@ -86,6 +97,10 @@ JNIEXPORT int JNICALL Java_com_deftech_wrapify_Wrapify_login(JNIEnv *env, jobjec
 	const char *passwd = (*env)->GetStringUTFChars(env, password, NULL);
 	error = sp_session_login(session, name, passwd, 1, NULL);
 
-	return 0;
+	if(SP_ERROR_OK == error){
+		pthread_create(&main_thread, NULL, &main_loop, NULL);
+	}
+
+	return error;
 }
 
