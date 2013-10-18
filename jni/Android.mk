@@ -9,5 +9,5 @@ include $(CLEAR_VARS)
 LOCAL_LDLIBS	:= -llog
 LOCAL_SHARED_LIBRARIES := libspotify\spotify-prebuilt
 LOCAL_MODULE    := Wrapify
-LOCAL_SRC_FILES := appkey.c Wrapify.c spotify_callbacks.c
+LOCAL_SRC_FILES := appkey.c Wrapify.c callbacks.c
 include $(BUILD_SHARED_LIBRARY)
