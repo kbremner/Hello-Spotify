@@ -8,6 +8,6 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_LDLIBS	:= -llog
 LOCAL_SHARED_LIBRARIES := libspotify\spotify-prebuilt
-LOCAL_MODULE    := Wrapify
-LOCAL_SRC_FILES := appkey.c Wrapify.c callbacks.c
+LOCAL_MODULE    := hello_spotify
+LOCAL_SRC_FILES := appkey.c hello_spotify.c callbacks.c
 include $(BUILD_SHARED_LIBRARY)

@@ -4,7 +4,7 @@
 #include <android/log.h>
 #include <unistd.h>
 #include "libspotify/api.h"
-#include "headers/com_deftech_wrapify_Wrapify.h"
+#include "headers/com_deftech_spotify_HelloSpotify.h"
 #include "headers/callbacks.h"
 
 static pthread_t main_thread;
@@ -31,12 +31,12 @@ static void *main_loop(){
 	return NULL;
 }
 
-JNIEXPORT jstring JNICALL Java_com_deftech_wrapify_Wrapify_getBuildID(JNIEnv *env, jobject jObject) {
+JNIEXPORT jstring JNICALL Java_com_deftech_spotify_HelloSpotify_getBuildID(JNIEnv *env, jobject jObject) {
 	__android_log_print(ANDROID_LOG_VERBOSE, "getBuildID", "returning build ID");
 	return (*env)->NewStringUTF(env, sp_build_id());
 }
 
-JNIEXPORT int JNICALL Java_com_deftech_wrapify_Wrapify_login(JNIEnv *env, jobject jObject, jstring username, jstring password, jstring cache_dir) {
+JNIEXPORT int JNICALL Java_com_deftech_spotify_HelloSpotify_login(JNIEnv *env, jobject jObject, jstring username, jstring password, jstring cache_dir) {
 	sp_session_config config;
 	sp_error error;
 //	sp_session *session;

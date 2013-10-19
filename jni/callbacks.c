@@ -59,18 +59,6 @@ void SP_CALLCONV logged_out(sp_session *session)
 	log_message(session, "logged out");
 }
 
-
-/**
- * This callback is called when the session have recieved a credential
- * that could be stored safely on disk
- *
- * @sa sp_session_callbacks#credentials_blob_updated
- */
-void SP_CALLCONV credentials_blob_updated(sp_session *session, const char *blob)
-{
-	__android_log_print(ANDROID_LOG_VERBOSE, "Blog Updated", "blob for storage: %s\n", blob);
-}
-
 /**
  * This callback is called for log messages.
  *
@@ -94,29 +82,5 @@ void SP_CALLCONV log_message(sp_session *session, const char *data)
 void SP_CALLCONV metadata_updated(sp_session *sess)
 {
 	log_message(sess, "metadata updated");
-}
-
-
-/**
- *
- */
-void SP_CALLCONV offline_status_updated(sp_session *sess)
-{
-	sp_offline_sync_status status;
-	sp_offline_sync_get_status(sess, &status);
-	if(status.syncing) {
-		__android_log_print(ANDROID_LOG_VERBOSE,"Offline Status Updated",
-			"Offline status: queued:%d:%zd done:%d:%zd copied:%d:%zd nocopy:%d err:%d\n",
-		    status.queued_tracks,
-		    (size_t)status.queued_bytes,
-		    status.done_tracks,
-		    (size_t)status.done_bytes,
-		    status.copied_tracks,
-		    (size_t)status.copied_bytes,
-		    status.willnotcopy_tracks,
-		    status.error_tracks);
-	} else {
-		__android_log_print(ANDROID_LOG_VERBOSE, "Offline Status Updated", "Offline status: Idle\n");
-	}
 }
 

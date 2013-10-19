@@ -1,14 +1,14 @@
-package com.deftech.wrapify;
+package com.deftech.spotify;
 
 import android.content.Context;
 
-public class Wrapify {
+public class HelloSpotify {
 	private final String cacheDir;
 	static {
-		System.loadLibrary("Wrapify");
+		System.loadLibrary("hello_spotify");
 	}
 	
-	public Wrapify(Context context){
+	public HelloSpotify(Context context){
 		cacheDir = context.getCacheDir().getAbsolutePath();
 	}
 
