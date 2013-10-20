@@ -32,7 +32,6 @@ static void *main_loop(){
 }
 
 JNIEXPORT jstring JNICALL Java_com_deftech_spotify_HelloSpotify_getBuildID(JNIEnv *env, jobject jObject) {
-	__android_log_print(ANDROID_LOG_VERBOSE, "getBuildID", "returning build ID");
 	return (*env)->NewStringUTF(env, sp_build_id());
 }
 
