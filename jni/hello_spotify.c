@@ -37,6 +37,7 @@ JNIEXPORT jstring JNICALL Java_com_deftech_spotify_HelloSpotify_getBuildID(JNIEn
 
 JNIEXPORT int JNICALL Java_com_deftech_spotify_HelloSpotify_login(JNIEnv *env, jobject jObject, jstring username, jstring password, jstring cache_dir) {
 	sp_session_config config;
+	sp_error error;
 
     // Get the app key
 	extern const char g_appkey[];
@@ -50,16 +51,16 @@ JNIEXPORT int JNICALL Java_com_deftech_spotify_HelloSpotify_login(JNIEnv *env, j
 
 	// Set the cache dir
 	config.cache_location = (*env)->GetStringUTFChars(env, cache_dir, NULL);
-	__android_log_print(ANDROID_LOG_VERBOSE, "Cache", "cache dir: %s", cache);
+	__android_log_print(ANDROID_LOG_VERBOSE, "Cache", "cache dir: %s", config.cache_location);
 
 
 	// Set the settings dir
 	const char *settings_path = "/settings";
-	char settings[strlen(cache) + strlen(settings_path)]; 	// Create the buffer
-	memset(&settings, 0, sizeof(settings)); 				// 0-initialise it
-	strcat(settings, cache);								// add the cache dir path
-	strcat(settings, settings_path);						// add the settings sub path
-	config.settings_location = settings;					// set the settings dir
+	char settings[strlen(config.cache_location) + strlen(settings_path)]; 	// Create the buffer
+	memset(&settings, 0, sizeof(settings)); 								// 0-initialise it
+	strcat(settings, config.cache_location);								// add the cache dir path
+	strcat(settings, settings_path);										// add the settings sub path
+	config.settings_location = settings;									// set the settings dir
 	__android_log_print(ANDROID_LOG_VERBOSE, "Settings", "settings dir: %s", settings);
 
 	// Set the app key
@@ -82,7 +83,7 @@ JNIEXPORT int JNICALL Java_com_deftech_spotify_HelloSpotify_login(JNIEnv *env, j
 	// Convert the username and password and login with them
 	const char *name = (*env)->GetStringUTFChars(env, username, NULL);
 	const char *passwd = (*env)->GetStringUTFChars(env, password, NULL);
-	sp_error error = sp_session_login(session, name, passwd, 1, NULL);
+	error = sp_session_login(session, name, passwd, 0, NULL);
 
 	// If successful, start out background thread
 	if(SP_ERROR_OK == error){
